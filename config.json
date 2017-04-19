@@ -1,0 +1,4 @@
+{
+	"dbUrl": "mongodb://localhost/chat-app",
+	"port": "8000"
+}
