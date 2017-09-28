@@ -42,7 +42,7 @@ app.use(function(err, req, res, next){
 	var status = err.status || 500;
 	res.status(status);
 	res.send('Internal server error: ' + err.stack);
-	console.log(err, err.stack);
+	throw err;
 });
 
 // var User = require('./models/user');

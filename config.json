@@ -1,5 +1,5 @@
 {
 	"dbUrl": "mongodb://localhost/chat-app",
-	"port": "4002",
+	"port": "3009",
 	"secret": "secret"
 }

@@ -33,7 +33,7 @@ module.exports.signup = function(req, res, next){
 					created: Date.now()
 				};
 				User.createUser(newUser).then(function(user){
-					
+
 					var token = jwt.sign({ id: user._id }, config.secret, {
 				      expiresIn: 86400 // expires in 24 hours
 				    });
@@ -51,7 +51,45 @@ module.exports.signup = function(req, res, next){
 	}
 };
 
-module.exports.login = function(){};
+module.exports.login = function(req, res, next){
+	var userInput = {
+		username: req.body.user.username,
+		password: req.body.user.password
+	};
+	console.log(userInput);
+	User.findOne({
+		'username': userInput.username
+	}, function(err, user){
+		if (err){
+			next(err);
+		} else {
+			if (!user){
+				res.status(403);
+				res.json({
+					message: 'User not found',
+					success: false,
+					status: 403
+				});
+			} else if (!isValidPassword(user, userInput.password)){
+				res.status(401);
+				res.json({
+					message: 'Invalid password',
+					success: false,
+					status: 401
+				});
+			} else {
+				var token = jwt.sign({ id: user._id }, config.secret, {
+				    expiresIn: 86400 
+				});
+
+				util.sendRes(res, {
+					user: user,
+					token: token	
+				});
+			}
+		}
+	});
+};
 
 module.exports.logout = function(){};
 
