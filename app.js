@@ -41,7 +41,8 @@ app.use(function(req, res, next){
 app.use(function(err, req, res, next){
 	var status = err.status || 500;
 	res.status(status);
-	res.send('Internal server error: ' + err);
+	res.send('Internal server error: ' + err.stack);
+	console.log(err, err.stack);
 });
 
 // var User = require('./models/user');
@@ -73,11 +74,6 @@ app.use(function(err, req, res, next){
 // }).catch(function(err){
 // 	console.log(err);
 // });
-
-app.use(function (err, req, res, next) {
-	console.error(err.stack)
-	res.status(500).send('Something broke!')
-})
 
 server.listen(config.port, function(){
 	console.log('Server started on port:', config.port);

@@ -33,9 +33,16 @@ module.exports.signup = function(req, res, next){
 					created: Date.now()
 				};
 				User.createUser(newUser).then(function(user){
+					
+					var token = jwt.sign({ id: user._id }, config.secret, {
+				      expiresIn: 86400 // expires in 24 hours
+				    });
+
 					util.sendRes(res, {
-						user: user	
+						user: user,
+						token: token	
 					});
+
 				}).catch(function(err){
 					next(err);
 				});
